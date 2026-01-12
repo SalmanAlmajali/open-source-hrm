@@ -27,20 +27,18 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->spa()
-
+            // ->spa()
             ->default()
             ->id('admin')
-            ->path('/')
+            ->path('/admin')
             ->passwordReset()
             ->profile()
             ->login()
-
             ->registration(Register::class)
             ->databaseNotifications()
             ->authPasswordBroker('employees')
             ->brandName(
-                'Admin Panel',
+                'HRMS Rajakon',
             )
             ->colors([
                 'primary' => Color::Sky,
@@ -59,8 +57,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Work space',
-                'Organization',
                 'HR Management',
+                'Master Data',
+                'Pengaturan Sistem',
             ])
             ->authMiddleware([
                 Authenticate::class,
