@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Departments;
 
-use App\Filament\Resources\Department\Schemas\DepartmentTable;
 use Filament\Schemas\Schema;
 
 use Filament\Tables\Columns\TextColumn;
@@ -19,13 +18,20 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\Departments\Schemas\DepartmentForm;
+use App\Filament\Resources\Departments\Tables\DepartmentTable;
+use BackedEnum;
+use Filament\Support\Icons\Heroicon;
+use UnitEnum;
 
 class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
 
-    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-group';
-    protected static string|\UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleGroup;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Master Data';
+
+    protected static ?string $label = 'Departemen';
 
     public static function form(Schema $schema): Schema
     {
