@@ -1,174 +1,257 @@
 <?php
 
 namespace App\Filament\Resources\Employees\Schemas;
+
 use Filament\Forms\Components\{TextInput, DatePicker, Select, Toggle, TextArea};
 use Filament\Schemas\Schema;
-use App\Models\{Position, Department};
+use App\Models\{Position, Department, Employee};
 use Filament\Schemas\Components\{Section, Grid};
+use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Builder;
+
 class EmployeeForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-
-                Section::make('Basic Information')
+                // GROUP 1: DATA PRIBADI
+                Section::make('Informasi Pribadi')
+                    ->description('Data utama identitas pegawai.')
+                    ->icon('heroicon-o-user') // Ikon User
+                    ->iconColor('primary')
                     ->collapsible()
+                    ->columns(2)
                     ->schema([
+                        TextInput::make('employee_code')
+                            ->label('NIP (Nomor Induk Pegawai)')
+                            ->required()
+                            ->maxLength(50)
+                            ->placeholder('Contoh: 2024001')
+                            ->prefixIcon('heroicon-m-identification')
+                            ->columnSpan(2), // NIP dibuat lebar penuh atau bisa disesuaikan
 
+                        TextInput::make('first_name')
+                            ->label('Nama Depan')
+                            ->required()
+                            ->placeholder('Masukan nama depan')
+                            ->maxLength(255),
+
+                        TextInput::make('last_name')
+                            ->label('Nama Belakang')
+                            ->required()
+                            ->placeholder('Masukan nama belakang')
+                            ->maxLength(255),
 
                         Grid::make(2)->schema([
-                            TextInput::make('employee_number')
-                                ->required()
-                                ->maxLength(50)
-                                ->label('Employee Number')
-                                ->placeholder('Enter employee number')
-                                ->columnSpan(1)
-                            ,
-                            TextInput::make('first_name')
+                            DatePicker::make('date_of_birth')
+                                ->label('Tanggal Lahir')
+                                ->prefixIcon('heroicon-m-calendar')
+                                ->format('Y-m-d') // Format database standar
+                                ->displayFormat('d/m/Y')
+                                ->maxDate(now()->subYears(17)) // Validasi minimal umur
                                 ->required(),
-                            TextInput::make('last_name')
-                                ->required(),
-                            DatePicker::make('date_of_birth'),
+
                             Select::make('gender')
-                                ->options(['Male' => 'Male', 'Female' => 'Female']),
-                            Select::make('marital_status')
+                                ->label('Jenis Kelamin')
+                                ->native(false)
                                 ->options([
-                                    'Single' => 'Single',
-                                    'Married' => 'Married',
-                                    'Divorced' => 'Divorced',
-                                    'Widowed' => 'Widowed'
+                                    'Male' => 'Laki-Laki',
+                                    'Female' => 'Perempuan',
+                                ])
+                                ->required(),
+
+                            Select::make('marital_status')
+                                ->label('Status Pernikahan')
+                                ->native(false)
+                                ->prefixIcon('heroicon-m-heart')
+                                ->options([
+                                    'Single' => 'Belum Menikah',
+                                    'Married' => 'Menikah',
+                                    'Divorced' => 'Cerai Hidup',
+                                    'Widowed' => 'Cerai Mati',
                                 ]),
 
+                            TextInput::make('national_id')
+                                ->label('Nomor KTP / NIK')
+                                ->required()
+                                ->numeric()
+                                ->unique(ignoreRecord: true)
+                                ->prefixIcon('heroicon-m-credit-card')
+                                ->maxLength(16)
+                                ->mask('9999999999999999'),
                         ])
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Contact Information')
-                    ->collapsible()
-                    ->schema([
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('email')->email()->required()->label('Email Address (this will be the default password for the employee)')
-                                    ->unique(ignoreRecord: true)
+                            ->columnSpanFull(),
+                    ]),
 
-                                ,
-                                TextInput::make('phone')->tel()->required()->label('Phone Number')->unique(ignoreRecord: true),
-                                TextInput::make('national_id')->required()->unique(ignoreRecord: true)
-                                    ->integer()
-                                ,
-                                TextInput::make('kra_pin'),
-                            ])
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Emergency Contact')
+                // GROUP 2: KONTAK & PAJAK
+                Section::make('Kontak & Identitas Pajak')
+                    ->icon('heroicon-o-phone')
                     ->collapsible()
+                    ->columns(2)
                     ->schema([
+                        TextInput::make('email')
+                            ->label('Alamat Email')
+                            ->email()
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->prefixIcon('heroicon-m-envelope')
+                            ->helperText('Email ini akan digunakan sebagai password default.'),
 
-                        Grid::make(2)
-                            ->schema([
-                                TextInput::make('emergency_contact_name'),
-                                TextInput::make('emergency_contact_phone'),
-                            ])
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Next of Kin')
+                        TextInput::make('phone')
+                            ->label('Nomor Telepon / WhatsApp')
+                            ->tel()
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->prefixIcon('heroicon-m-device-phone-mobile'),
+
+                        TextInput::make('kra_pin') // Sesuaikan nama kolom jika ingin diubah jadi 'npwp'
+                            ->label('NPWP (Nomor Pajak)')
+                            ->placeholder('Masukan nomor NPWP')
+                            ->prefixIcon('heroicon-m-banknotes')
+                            ->mask('99.999.999.9-999.999')
+                            ->placeholder('XX.XXX.XXX.X-XXX.XXX')
+                            ->columnSpanFull(),
+                    ]),
+
+                // GROUP 3: KONTAK DARURAT & KELUARGA (Digabung agar lebih hemat tempat)
+                Section::make('Kontak Darurat & Keluarga')
+                    ->icon('heroicon-o-lifebuoy')
                     ->collapsible()
+                    ->collapsed() // Default tertutup agar tidak terlalu panjang
                     ->schema([
-                        Grid::make(2)
+                        // Bagian Kiri: Kontak Darurat
+                        Section::make('Kontak Darurat')
+                            ->icon('heroicon-s-exclamation-triangle')
+                            ->compact() // Tampilan lebih padat
+                            ->schema([
+                                TextInput::make('emergency_contact_name')
+                                    ->label('Nama Kontak')
+                                    ->prefixIcon('heroicon-m-user'),
+                                TextInput::make('emergency_contact_phone')
+                                    ->label('Nomor Telepon')
+                                    ->tel()
+                                    ->prefixIcon('heroicon-m-phone'),
+                            ])->columnSpan(1),
+
+                        // Bagian Kanan: Ahli Waris / Keluarga
+                        Section::make('Keluarga Terdekat (Ahli Waris)')
+                            ->icon('heroicon-s-user-group')
+                            ->compact()
                             ->schema([
                                 TextInput::make('next_of_kin_name')
-                                    ->label('Name')
+                                    ->label('Nama Lengkap')
                                     ->required(),
                                 TextInput::make('next_of_kin_relationship')
-                                    ->label('Relationship')
+                                    ->label('Hubungan')
+                                    ->placeholder('Istri, Suami, Ayah, dll')
                                     ->required(),
                                 TextInput::make('next_of_kin_phone')
-                                    ->required()
+                                    ->label('Nomor Telepon')
                                     ->tel()
-                                    ->label('Phone'),
+                                    ->required(),
                                 TextInput::make('next_of_kin_email')
-                                    ->label('Email')
+                                    ->label('Email (Opsional)')
                                     ->email(),
-                            ])
-                    ])
-                    ->columnSpanFull(),
-                Section::make('Employment Details')
+                            ])->columnSpan(1),
+                    ]),
+
+                // GROUP 4: DATA PEKERJAAN
+                Section::make('Detail Kepegawaian')
+                    ->description('Informasi terkait posisi dan departemen.')
+                    ->icon('heroicon-o-briefcase')
                     ->collapsible()
                     ->schema([
-                        Grid::make(2)
+                        Select::make('department_id')
+                            ->label('Departemen')
+                            ->relationship(
+                                name: 'department',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn(Builder $query) => $query->select('id', 'name')->orderBy('name', 'asc')
+                            )
+                            ->searchable()
+                            ->preload()
+                            ->native(false)
+                            ->prefixIcon('heroicon-m-building-office')
+                            ->placeholder('Pilih Departemen')
+                            ->createOptionForm([
+                                Section::make('Informasi Departemen')
+                                    ->description('Masukan detail utama departemen perusahaan.')
+                                    ->icon('heroicon-o-building-office-2')
+                                    ->schema([
+                                        Grid::make(2)->schema([
+                                            TextInput::make('name')
+                                                ->label('Nama Departemen')
+                                                ->required()
+                                                ->maxLength(255)
+                                                ->placeholder('Contoh: Human Resources')
+                                                ->prefixIcon('heroicon-m-building-office'),
 
-                            ->schema([
-                                Select::make('department_id')
-                                    ->relationship(
-                                        name: 'department',
-                                        titleAttribute: 'name',
-                                        modifyQueryUsing: fn(Builder $query) => $query->select('id', 'name')->orderBy('name', 'asc')
-                                    )
-                                    ->label('Department')
-                                    ->searchable()
-                                    ->placeholder('Select a department')
-                                    ->preload()
-                                    // ->columnSpanFull()
-                                    ->nullable(),
-                                Select::make('position_id')
-                                    ->options(
-                                        Position::all()->pluck('title', 'id')
+                                            TextInput::make('code')
+                                                ->label('Kode Departemen')
+                                                ->maxLength(50)
+                                                ->default(fn() => 'DEP-' . strtoupper(uniqid())) // Auto generate optional
+                                                ->placeholder('Contoh: HRD-001')
+                                                ->prefixIcon('heroicon-m-tag'),
+                                        ]),
 
-                                    )
-                                    ->label('Position')
-                                    ->searchable()
-                                    ->placeholder('Select a position')
-                                    ->preload()
-                                    ->nullable()
-                                    ->createOptionForm([
-                                        TextInput::make('title')
-                                            ->required()
-                                            ->label('Position Title'),
-                                        Select::make('department_id')
-                                            ->options(
-                                                Department::all()->pluck('name', 'id')
-                                            ),
-                                        Grid::make(2)
-                                            ->schema([
-                                                TextInput::make('code')
-                                                    ->label('Position Code')
-                                                    ->unique(ignoreRecord: true)
-                                                    ->nullable(),
-                                                TextInput::make('salary')
-                                                    ->label('Salary')
-                                                    ->numeric()
-                                                    ->nullable(),
-                                            ]),
+                                        Select::make('manager_id')
+                                            ->label('Kepala Departemen')
+                                            ->options(Employee::orderBy('first_name', 'asc')->get()->pluck('name', 'id')) // Pastikan ada accessor full_name di model Employee
+                                            ->searchable()
+                                            ->preload()
+                                            ->prefixIcon('heroicon-m-user-circle')
+                                            ->placeholder('Pilih manajer saat ini')
+                                            ->native(false),
+
                                         Textarea::make('description')
-                                            ->label('Description')
-                                            ->nullable()
-                                            ->maxLength(255),
+                                            ->label('Deskripsi')
+                                            ->rows(3)
+                                            ->maxLength(500)
+                                            ->columnSpanFull()
+                                            ->placeholder('Jelaskan fungsi dan tanggung jawab departemen ini.'),
+                                    ])
+                            ]),
 
-                                    ])
-                                    ->createOptionUsing(function (array $data) {
-                                        return Position::create([
-                                            'title' => $data['title'],
-                                            'department_id' => $data['department_id'],
-                                            'code' => $data['code'] ?? null,
-                                            'salary' => $data['salary'] ?? null,
-                                            'description' => $data['description'] ?? null,
-                                        ])->id;
-                                    })
-                                    ->native(false),
-                                Select::make('employment_type')
-                                    ->options([
-                                        'Permanent' => 'Permanent',
-                                        'Contract' => 'Contract',
-                                        'Casual' => 'Casual',
-                                    ])
-                                    ->required(),
-                                DatePicker::make('hire_date')->required(),
-                                DatePicker::make('termination_date'),
-                                Toggle::make('is_active')->default(true),
+                        Select::make('position_id')
+                            ->label('Jabatan / Posisi')
+                            ->options(Position::all()->pluck('title', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->native(false)
+                            ->prefixIcon('heroicon-m-briefcase')
+                            ->placeholder('Pilih Jabatan'),
+
+                        Select::make('employment_type')
+                            ->label('Status Kepegawaian')
+                            ->options([
+                                'Permanent' => 'Tetap (Permanent)',
+                                'Contract' => 'Kontrak (PKWT)',
+                                'Casual' => 'Harian / Freelance',
+                                'Internship' => 'Magang',
                             ])
-                    ])
-                    ->columnSpanFull(),
+                            ->native(false)
+                            ->required(),
+
+                        Grid::make(2)->schema([
+                            DatePicker::make('hire_date')
+                                ->label('Tanggal Bergabung')
+                                ->prefixIcon('heroicon-m-calendar-days')
+                                ->required(),
+
+                            DatePicker::make('termination_date')
+                                ->label('Tanggal Berhenti')
+                                ->prefixIcon('heroicon-m-x-circle')
+                                ->helperText('Isi jika pegawai sudah tidak bekerja.'),
+                        ]),
+
+                        Toggle::make('is_active')
+                            ->label('Status Akun Aktif')
+                            ->onColor('success')
+                            ->offColor('danger')
+                            ->default(true)
+                            ->inline(false),
+                    ]),
             ]);
     }
 }
