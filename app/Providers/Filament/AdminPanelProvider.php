@@ -3,9 +3,10 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\Register;
-use Filament\Pages\Dashboard;
+use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\TaskBoard;
 use App\Filament\Resources\Departments\Widgets\StatsOverview;
+use App\Filament\Resources\Projects\Widgets\ProjectOverviewChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,20 +28,18 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->spa()
-
+            // ->spa()
             ->default()
             ->id('admin')
-            ->path('/')
+            ->path('/admin')
             ->passwordReset()
             ->profile()
             ->login()
-
             ->registration(Register::class)
             ->databaseNotifications()
             ->authPasswordBroker('employees')
             ->brandName(
-                'Admin Panel',
+                'HRMS Rajakon',
             )
             ->colors([
                 'primary' => Color::Sky,
@@ -56,11 +55,13 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 StatsOverview::class,
                 \App\Filament\Resources\Employees\Widgets\StatsOverview::class,
+                ProjectOverviewChart::class,
             ])
             ->navigationGroups([
                 'Work space',
-                'Organization',
                 'HR Management',
+                'Master Data',
+                'Pengaturan Sistem',
             ])
             ->authMiddleware([
                 Authenticate::class,

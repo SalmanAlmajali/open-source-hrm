@@ -9,6 +9,7 @@ use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\Messages\Pages\ListMessages;
 use App\Filament\Resources\Messages\Pages\CreateMessage;
 use App\Filament\Resources\Messages\Pages\ViewMessage;
+use App\Filament\Resources\Messages\Schemas\MessageTable;
 // use App\Filament\Resources\MessageResource\Pages;
 // use App\Filament\Resources\MessageResource\RelationManagers;
 use Filament\Forms\Components\RichEditor;
@@ -28,7 +29,6 @@ use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\Message\Schemas\MessageTable;
 
 class MessageResource extends Resource
 {
@@ -40,6 +40,8 @@ class MessageResource extends Resource
     protected static ?string $navigationLabel = "Inbox";
     protected static ?string $label = "Message";
     protected static ?string $pluralModelLabel = "Messages";
+
+    protected static bool $shouldRegisterNavigation = false;
 
     protected static string|\UnitEnum|null $navigationGroup = "Work space";
     // protected static ?string $navigationBadgeTooltip = "Unread messages";

@@ -17,6 +17,8 @@ class LeaveResource extends Resource
     protected static string|\UnitEnum|null $navigationGroup = 'HR Management';
     protected static ?int $navigationSort = 3;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $modelLabel = 'Leave Requests';
 
     public static function form(Schema $schema): Schema

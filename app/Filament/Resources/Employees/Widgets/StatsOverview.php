@@ -30,26 +30,26 @@ class StatsOverview extends BaseWidget
 
         return [
             //
-            Stat::make('Total Employees', Employee::count())
-                ->label('Total Employees')
+            Stat::make('Jumlah Pegawai', Employee::count())
+                ->label('Jumlah Pegawai')
                 ->color('primary')
-                ->description('Total number of employees in the organization')
+                ->description('Jumlah total pegawai dalam organisasi')
                 ->extraAttributes($commonAttributes)
                 ->icon('heroicon-o-user-group'),
-            Stat::make('Active Employees', Employee::where('is_active', true)->count())
+            Stat::make('Pegawai Aktif', Employee::where('is_active', true)->count())
                 ->color('success')
-                ->label('Active Employees')
+                ->label('Pegawai Aktif')
                 ->extraAttributes(
                     [
                         'class' => 'cursor-pointer',
                         'wire:click' => "redirectToActiveEmployees()"
                     ]
                 )
-                ->description('Number of employees currently active employees')
+                ->description('Jumlah pegawai yang saat ini aktif')
                 ->icon('heroicon-o-check-circle'),
-            Stat::make('Inactive Employees', Employee::where('is_active', false)->count())
-                ->label('Inactive Employees')
-                ->description('Number of employees who are no longer active')
+            Stat::make('Pegawai Tidak Aktif', Employee::where('is_active', false)->count())
+                ->label('Pegawai Tidak Aktif')
+                ->description('Jumlah karyawan yang sudah tidak aktif lagi')
                 ->color('danger')
                 ->extraAttributes(
                     [
