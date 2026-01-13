@@ -221,4 +221,9 @@ class AllCalendarWidget extends CalendarWidget
 
             });
     }
+
+    public static function canView(): bool
+    {
+        return false;
+    }
 }
