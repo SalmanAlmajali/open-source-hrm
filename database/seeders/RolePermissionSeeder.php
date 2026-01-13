@@ -72,11 +72,11 @@ class RolePermissionSeeder extends Seeder
         // SETUP ROLE & ASSIGMENT
 
         // Role 1: Super Admin
-        $superAdmin = Role::firstOrCreate(['name' => 'Super Admin']);
+        $superAdmin = Role::firstOrCreate(['name' => 'super_admin']);
         $superAdmin->syncPermissions(Permission::all());
 
         // Role 2: HR Manager
-        $hrManager = Role::firstOrCreate(['name' => 'HR Manager']);
+        $hrManager = Role::firstOrCreate(['name' => 'hr_manager']);
         $hrManager->syncPermissions([
             // Pegawai & Struktur Organisasi
             'view_any_employees', 'view_employees', 'create_employees', 'update_employees', 'delete_employees',
@@ -91,7 +91,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         // Role 3: Karyawan
-        $staff = Role::firstOrCreate(['name' => 'Karyawan']);
+        $staff = Role::firstOrCreate(['name' => 'karyawan']);
         $staff->syncPermissions([
             'view_project_overview', 
         ]);
