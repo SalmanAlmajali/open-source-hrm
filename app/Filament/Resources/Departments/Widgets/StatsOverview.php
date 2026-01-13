@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Departments\Widgets;
 
+use App\Filament\Resources\Admins\AdminResource;
+use App\Filament\Resources\Departments\DepartmentResource;
 use App\Models\Employee;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -12,21 +14,21 @@ class StatsOverview extends BaseWidget
 {
     public function redirectToDepartments()
     {
-        return redirect()->to('/departments');
+        return redirect()->to(DepartmentResource::getUrl());
     }
     public function redirectToAdmins()
     {
-        return redirect()->to('/admins');
+        return redirect()->to(AdminResource::getUrl());
     }
 
     protected function getStats(): array
     {
         return [
             //
-            Stat::make('Total Departments', Department::count())
-                ->label('Total Departments')
+            Stat::make('Jumlah Departemen', Department::count())
+                ->label('Jumlah Departemen')
                 ->color('primary')
-                ->description('Total number of departments in the organization')
+                ->description('Jumlah total departemen dalam organisasi')
                 ->icon('heroicon-o-rectangle-group')
                 ->extraAttributes([
                     'class' => 'cursor-pointer',
@@ -34,10 +36,10 @@ class StatsOverview extends BaseWidget
                 ])
             // ->url(route('filament.admin.resources.departments.index')),
             ,
-            Stat::make('HR Admins', Employee::role('admin')->count())
-                ->label('Total HR Admins')
+            Stat::make('Admin HR', Employee::role('admin')->count())
+                ->label('Jumlah Admin HR')
                 ->color('success')
-                ->description('Total number of HR admins in the organization')
+                ->description('Jumlah total admin HR dalam organisasi')
                 ->icon('heroicon-o-user-group')
                 ->extraAttributes([
                     'class' => 'cursor-pointer',
