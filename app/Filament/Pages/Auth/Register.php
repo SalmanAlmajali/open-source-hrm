@@ -5,8 +5,6 @@ namespace App\Filament\Pages\Auth;
 use App\Models\Employee;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-// use Filament\Pages\Auth\Register as BaseRegister;
-// use Filament\Auth\Pages\Register as BaseRegister;
 use Filament\Auth\Pages\Register as BaseRegister;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
@@ -54,10 +52,16 @@ class Register extends BaseRegister
     }
     protected function handleRegistration(array $data): Employee
     {
-        $admin = $this->createUser($data);
-        $admin->assignRole('admin');
-        $this->redirect('/admin');
-        return $admin;
+        $isFirstUser = Employee::count() === 0;
+
+        $user = $this->createUser($data);
+        if ($isFirstUser) {
+            $user->assignRole('super_admin');
+        } else {
+            $user->assignRole('karyawan');
+        }
+
+        return $user;
     }
     protected function createUser(array $data): Employee
     {
