@@ -12,7 +12,7 @@ class EmployeeObserver
     public function created(Employee $employee): void
     {
         //
-        $employee->assignRole('employee');
+        $employee->assignRole('karyawan');
     }
 
     /**
