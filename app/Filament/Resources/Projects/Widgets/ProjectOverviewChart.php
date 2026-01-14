@@ -104,4 +104,9 @@ class ProjectOverviewChart extends ChartWidget
 
         return "Menampilkan data {$columnLabel} periode {$periodLabel}.";
     }
+  
+    public static function canView(): bool
+    {
+        return auth()->user()->can('view_project_overview');
+    }
 }

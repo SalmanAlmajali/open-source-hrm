@@ -65,7 +65,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                'role:admin'
+                'role:super_admin'
             ])
             ->middleware([
                 EncryptCookies::class,

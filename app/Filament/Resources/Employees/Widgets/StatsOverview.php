@@ -60,4 +60,9 @@ class StatsOverview extends BaseWidget
                 ->icon('heroicon-o-x-circle'),
         ];
     }
+
+    public static function canView(): bool
+    {
+        return auth()->user()->can('view_dashboard_stats');
+    }
 }
