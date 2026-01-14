@@ -84,78 +84,6 @@ class EmployeeForm
                             ->columnSpanFull(),
                     ]),
 
-                // GROUP 2: KONTAK & PAJAK
-                Section::make('Kontak & Identitas Pajak')
-                    ->icon('heroicon-o-phone')
-                    ->collapsible()
-                    ->columns(2)
-                    ->schema([
-                        TextInput::make('email')
-                            ->label('Alamat Email')
-                            ->email()
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->prefixIcon('heroicon-m-envelope')
-                            ->helperText('Email ini akan digunakan sebagai password default.'),
-
-                        TextInput::make('phone')
-                            ->label('Nomor Telepon / WhatsApp')
-                            ->tel()
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->prefixIcon('heroicon-m-device-phone-mobile'),
-
-                        TextInput::make('kra_pin') // Sesuaikan nama kolom jika ingin diubah jadi 'npwp'
-                            ->label('NPWP (Nomor Pajak)')
-                            ->placeholder('Masukan nomor NPWP')
-                            ->prefixIcon('heroicon-m-banknotes')
-                            ->mask('99.999.999.9-999.999')
-                            ->placeholder('XX.XXX.XXX.X-XXX.XXX')
-                            ->columnSpanFull(),
-                    ]),
-
-                // GROUP 3: KONTAK DARURAT & KELUARGA (Digabung agar lebih hemat tempat)
-                Section::make('Kontak Darurat & Keluarga')
-                    ->icon('heroicon-o-lifebuoy')
-                    ->collapsible()
-                    ->collapsed() // Default tertutup agar tidak terlalu panjang
-                    ->schema([
-                        // Bagian Kiri: Kontak Darurat
-                        Section::make('Kontak Darurat')
-                            ->icon('heroicon-s-exclamation-triangle')
-                            ->compact() // Tampilan lebih padat
-                            ->schema([
-                                TextInput::make('emergency_contact_name')
-                                    ->label('Nama Kontak')
-                                    ->prefixIcon('heroicon-m-user'),
-                                TextInput::make('emergency_contact_phone')
-                                    ->label('Nomor Telepon')
-                                    ->tel()
-                                    ->prefixIcon('heroicon-m-phone'),
-                            ])->columnSpan(1),
-
-                        // Bagian Kanan: Ahli Waris / Keluarga
-                        Section::make('Keluarga Terdekat (Ahli Waris)')
-                            ->icon('heroicon-s-user-group')
-                            ->compact()
-                            ->schema([
-                                TextInput::make('next_of_kin_name')
-                                    ->label('Nama Lengkap')
-                                    ->required(),
-                                TextInput::make('next_of_kin_relationship')
-                                    ->label('Hubungan')
-                                    ->placeholder('Istri, Suami, Ayah, dll')
-                                    ->required(),
-                                TextInput::make('next_of_kin_phone')
-                                    ->label('Nomor Telepon')
-                                    ->tel()
-                                    ->required(),
-                                TextInput::make('next_of_kin_email')
-                                    ->label('Email (Opsional)')
-                                    ->email(),
-                            ])->columnSpan(1),
-                    ]),
-
                 // GROUP 4: DATA PEKERJAAN
                 Section::make('Detail Kepegawaian')
                     ->description('Informasi terkait posisi dan departemen.')
@@ -251,6 +179,78 @@ class EmployeeForm
                             ->offColor('danger')
                             ->default(true)
                             ->inline(false),
+                    ]),
+
+                // GROUP 2: KONTAK & PAJAK
+                Section::make('Kontak & Identitas Pajak')
+                    ->icon('heroicon-o-phone')
+                    ->collapsible()
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('email')
+                            ->label('Alamat Email')
+                            ->email()
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->prefixIcon('heroicon-m-envelope')
+                            ->helperText('Email ini akan digunakan sebagai password default.'),
+
+                        TextInput::make('phone')
+                            ->label('Nomor Telepon / WhatsApp')
+                            ->tel()
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->prefixIcon('heroicon-m-device-phone-mobile'),
+
+                        TextInput::make('kra_pin') // Sesuaikan nama kolom jika ingin diubah jadi 'npwp'
+                            ->label('NPWP (Nomor Pajak)')
+                            ->placeholder('Masukan nomor NPWP')
+                            ->prefixIcon('heroicon-m-banknotes')
+                            ->mask('99.999.999.9-999.999')
+                            ->placeholder('XX.XXX.XXX.X-XXX.XXX')
+                            ->columnSpanFull(),
+                    ]),
+
+                // GROUP 3: KONTAK DARURAT & KELUARGA (Digabung agar lebih hemat tempat)
+                Section::make('Kontak Darurat & Keluarga')
+                    ->icon('heroicon-o-lifebuoy')
+                    ->collapsible()
+                    ->collapsed() // Default tertutup agar tidak terlalu panjang
+                    ->schema([
+                        // Bagian Kiri: Kontak Darurat
+                        Section::make('Kontak Darurat')
+                            ->icon('heroicon-s-exclamation-triangle')
+                            ->compact() // Tampilan lebih padat
+                            ->schema([
+                                TextInput::make('emergency_contact_name')
+                                    ->label('Nama Kontak')
+                                    ->prefixIcon('heroicon-m-user'),
+                                TextInput::make('emergency_contact_phone')
+                                    ->label('Nomor Telepon')
+                                    ->tel()
+                                    ->prefixIcon('heroicon-m-phone'),
+                            ])->columnSpan(1),
+
+                        // Bagian Kanan: Ahli Waris / Keluarga
+                        Section::make('Keluarga Terdekat (Ahli Waris)')
+                            ->icon('heroicon-s-user-group')
+                            ->compact()
+                            ->schema([
+                                TextInput::make('next_of_kin_name')
+                                    ->label('Nama Lengkap')
+                                    ->required(),
+                                TextInput::make('next_of_kin_relationship')
+                                    ->label('Hubungan')
+                                    ->placeholder('Istri, Suami, Ayah, dll')
+                                    ->required(),
+                                TextInput::make('next_of_kin_phone')
+                                    ->label('Nomor Telepon')
+                                    ->tel()
+                                    ->required(),
+                                TextInput::make('next_of_kin_email')
+                                    ->label('Email (Opsional)')
+                                    ->email(),
+                            ])->columnSpan(1),
                     ]),
             ]);
     }
