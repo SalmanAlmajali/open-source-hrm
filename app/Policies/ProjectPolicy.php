@@ -41,6 +41,14 @@ class ProjectPolicy
     }
 
     /**
+     * Determine whether the user can delete any models.
+     */
+    public function deleteAny(Employee $employee): bool
+    {
+        return $employee->can('delete_any_projects');
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(Employee $employee, Project $project): bool

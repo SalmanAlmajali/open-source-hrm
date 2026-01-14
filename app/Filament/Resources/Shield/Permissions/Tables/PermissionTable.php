@@ -17,20 +17,20 @@ class PermissionTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label('Nama Izin')
-                    ->searchable()
-                    ->sortable()
+                TextColumn::make('readable_name')
+                    ->label('Keterangan Izin')
+                    ->state(fn ($record) => self::getLabel($record->name))
+                    ->searchable(['name'])
+                    ->sortable(['name'])
                     ->weight(FontWeight::Bold)
-                    ->fontFamily(FontFamily::Mono) // Font koding
-                    ->copyable()
-                    ->icon('heroicon-m-key'),
+                    ->icon('heroicon-m-key')
+                    ->description(fn ($record) => $record->name),
 
                 TextColumn::make('guard_name')
                     ->label('Guard')
                     ->badge()
                     ->color('gray'),
-                
+
                 TextColumn::make('roles_count')
                     ->label('Digunakan di')
                     ->counts('roles')
@@ -55,5 +55,47 @@ class PermissionTable
                     DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getLabel(string $permissionName): string
+    {
+        $actions = [
+            'view_any' => 'Melihat Daftar',
+            'view' => 'Melihat Detail',
+            'create' => 'Membuat',
+            'update' => 'Mengubah',
+            'delete' => 'Menghapus',
+            'delete_any' => 'Hapus Banyak',
+            'restore' => 'Mengembalikan',
+            'force_delete' => 'Hapus Permanen',
+        ];
+
+        $resources = [
+            'admins' => 'Admin',
+            'departments' => 'Departemen',
+            'employees' => 'Pegawai',
+            'positions' => 'Jabatan',
+            'projects' => 'Proyek',
+            'roles' => 'Peran (Role)',
+            'permissions' => 'Izin Akses',
+            'dashboard_stats' => 'Statistik Dashboard',
+            'project_overview' => 'Overview Proyek',
+        ];
+
+        // Format standar: action_resource (contoh: create_projects)
+
+        $parts = explode('_', $permissionName);
+
+        // Cek bagian akhir string untuk mencari nama Resource
+        $resourceKey = end($parts);
+
+        // Sisanya adalah Action
+        array_pop($parts); // Hapus elemen terakhir (resource)
+        $actionKey = implode('_', $parts); // Gabungkan sisa menjadi action
+
+        $actionLabel = $actions[$actionKey] ?? ucfirst(str_replace('_', ' ', $actionKey));
+        $resourceLabel = $resources[$resourceKey] ?? ucfirst($resourceKey);
+
+        return "{$actionLabel} {$resourceLabel}";
     }
 }
