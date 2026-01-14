@@ -34,8 +34,8 @@ class StatsOverview extends BaseWidget
                 ])
             // ->url(route('filament.admin.resources.departments.index')),
             ,
-            Stat::make('HR Admins', Employee::role('admin')->count())
-                ->label('Total HR Admins')
+            Stat::make('Admin HR', Employee::role('super_admin')->count())
+                ->label('Jumlah Admin HR')
                 ->color('success')
                 ->description('Total number of HR admins in the organization')
                 ->icon('heroicon-o-user-group')
@@ -48,5 +48,10 @@ class StatsOverview extends BaseWidget
 
 
         ];
+    }
+
+    public static function canView(): bool
+    {
+        return auth()->user()->can('view_dashboard_stats');
     }
 }
