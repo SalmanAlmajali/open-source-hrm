@@ -22,7 +22,7 @@ class AdminForm
                             ->options(function () {
                                 // Hanya tampilkan pegawai yang BELUM jadi admin
                                 return Employee::query()
-                                    ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'admin'))
+                                    ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'super_admin'))
                                     ->pluck('first_name', 'id') // Sesuaikan 'first_name' jika ada accessor full_name
                                     ->map(fn ($name, $id) => Employee::find($id)->name ?? $name);
                             })
