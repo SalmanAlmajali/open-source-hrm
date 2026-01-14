@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\Shield\Roles\Schemas;
 
+use App\Filament\Resources\Shield\Permissions\Tables\PermissionTable;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Spatie\Permission\Models\Permission;
 
 class RoleForm
 {
@@ -42,8 +44,10 @@ class RoleForm
                     ->icon('heroicon-o-finger-print')
                     ->schema([
                         CheckboxList::make('permissions')
-                            ->label('') // Label kosong agar lebih bersih
+                            ->label('Izin Akses') // Label kosong agar lebih bersih
                             ->relationship('permissions', 'name') // Relasi Many-to-Many
+                            ->getOptionLabelFromRecordUsing(fn ($record) => PermissionTable::getLabel($record->name))
+                            ->descriptions(fn (): array => Permission::orderBy('id', 'asc')->pluck('name', 'id')->toArray())
                             ->searchable() // Bisa cari nama izin
                             ->bulkToggleable() // Tombol Select All / Deselect All
                             ->columns(2) // Tampilan 2 kolom

@@ -12,7 +12,7 @@ class EmployeePolicy
      */
     public function viewAny(Employee $employee): bool
     {
-        return $employee->can('view_any_projects');
+        return $employee->can('view_any_employees');
     }
 
     /**
@@ -37,6 +37,14 @@ class EmployeePolicy
     public function update(Employee $employee): bool
     {
         return $employee->can('update_employees');
+    }
+
+    /**
+     * Determine whether the user can delete any models.
+     */
+    public function deleteAny(Employee $employee): bool
+    {
+        return $employee->can('delete_any_employees');
     }
 
     /**
