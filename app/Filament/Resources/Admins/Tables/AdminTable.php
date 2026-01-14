@@ -19,7 +19,7 @@ class AdminTable
         return $table
             ->query(
                 Employee::query()->latest()->whereHas('roles', function ($query) {
-                    return $query->where('name', 'admin');
+                    return $query->where('name', 'super_admin');
                 })
             )
             ->columns([
