@@ -46,11 +46,11 @@ class ProjectForm
                                     ->label('Upload Dokumen Penawaran')
                                     ->directory('project-offers') // Folder penyimpanan
                                     ->acceptedFileTypes(['application/pdf', 'image/*']) // Hanya PDF & Gambar
-                                    ->maxSize(5120) // Maks 5MB
+                                    ->maxSize(10240) // Maks 5MB
                                     ->downloadable()
                                     ->openable()
                                     ->columnSpanFull()
-                                    ->helperText('Format: PDF, JPG, PNG. Maks: 5MB'),
+                                    ->helperText('Format: PDF, JPG, PNG. Maks: 10MB'),
                             ])->columns(2),
 
                         Section::make('Legalitas (SPK)')
