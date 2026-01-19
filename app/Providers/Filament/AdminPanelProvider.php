@@ -23,6 +23,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Resma\FilamentAwinTheme\FilamentAwinTheme;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -60,6 +62,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Work space',
                 'HR Management',
+                'Tata Laksana Surat',
                 'Master Data',
                 'Pengaturan Sistem',
             ])
@@ -78,7 +81,9 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 // 'role:admin'
+            ])
+            ->plugins([
+                FilamentAwinTheme::make(),
             ]);
-
     }
 }
