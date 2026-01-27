@@ -20,7 +20,7 @@ class ProjectInfolist
             ->components([
                 // HEADER: Nama Proyek & Status
                 Group::make()
-                ->columns(2)
+                    ->columns(2)
                     ->schema([
                         Section::make('Identitas Proyek')
                             ->description('Informasi dasar mengenai pekerjaan.')
@@ -135,6 +135,33 @@ class ProjectInfolist
                                     ->size(TextSize::Large)
                                     ->color('success') // Warna Hijau
                                     ->icon('heroicon-o-check-circle'),
+                            ]),
+                        ]),
+                    ])
+                    ->columnSpanFull(),
+
+                Section::make('Tim & Catatan Tambahan')
+                    ->icon('heroicon-o-user-group')
+                    ->schema([
+                        Grid::make(2)->schema([
+                            // Kolom Kiri: Penanggung Jawab (PIC)
+                            Group::make([
+                                TextEntry::make('employees.name')
+                                    ->label('Penanggung Jawab (PIC)')
+                                    ->badge() // Menampilkan daftar nama dalam bentuk badge
+                                    ->color('info')
+                                    ->icon('heroicon-m-user')
+                                    ->listWithLineBreaks() // Jika banyak, akan disusun ke bawah
+                                    ->placeholder('Belum ada penanggung jawab yang ditunjuk.'),
+                            ]),
+
+                            // Kolom Kanan: Catatan
+                            Group::make([
+                                TextEntry::make('notes')
+                                    ->label('Catatan Proyek')
+                                    ->markdown() // Mendukung format teks tebal/miring jika diperlukan
+                                    ->prose() // Membuat teks panjang lebih nyaman dibaca
+                                    ->placeholder('Tidak ada catatan khusus untuk proyek ini.'),
                             ]),
                         ]),
                     ])
