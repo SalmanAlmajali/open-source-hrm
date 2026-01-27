@@ -14,6 +14,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Support\Facades\FilamentTimezone;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -90,5 +92,24 @@ class AppServiceProvider extends ServiceProvider
             ->removeUploadedFileButtonPosition('right')
             ->uploadButtonPosition('left')
             ->uploadProgressIndicatorPosition('left'));
+
+        Table::configureUsing(fn(Table $table) => $table
+            ->pushColumns([
+                TextColumn::make('no')
+                    ->label('No.')
+                    ->rowIndex()
+                    ->color('gray')
+                    ->width(50),
+
+                TextColumn::make('created_at')
+                    ->label('Created')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('updated_at')
+                    ->label('Updated')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ]));
     }
 }
