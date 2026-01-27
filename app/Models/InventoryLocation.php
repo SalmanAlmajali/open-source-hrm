@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filament\Resources\InventoryLocations\InventoryLocationResource;
+use App\QrCodeHelper;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,19 +52,9 @@ class InventoryLocation extends Model
             'record' => $location
         ]);
 
-        $filename = "/inventory/qr_locations/{$location->id}.png";
+        $filename = "/inventory/qr_locations/{$location->name}.png";
 
-        // Pastikan folder ada
-        if (!Storage::exists('inventory')) {
-            Storage::makeDirectory('inventory');
-
-            if (!Storage::exists('/inventory/qr_locations/')) {
-                Storage::makeDirectory('/inventory/qr_locations/');
-            }
-        }
-
-        $qrImage = QrCode::format('png')->size(300)->margin(1)->generate($url);
-        Storage::put($filename, $qrImage);
+        QrCodeHelper::generate($url, $filename);
 
         $location->qr_path = $filename;
     }

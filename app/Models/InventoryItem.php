@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filament\Resources\InventoryItems\InventoryItemResource;
+use App\QrCodeHelper;
 use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -109,16 +110,7 @@ class InventoryItem extends Model
         $kodeUtama = optional($item->inventoryCode)->code ?? 'UNKNOWN';
         $filename  = "inventory/qr_items/{$kodeUtama}-{$item->unique_id}.png";
 
-        if (!Storage::exists('inventory')) {
-            Storage::makeDirectory('inventory');
-
-            if (!Storage::exists("qr_items/{$kodeUtama}")) {
-                Storage::makeDirectory("qr_items/{$kodeUtama}");
-            }
-        }
-
-        $qrImage = QrCode::format('png')->size(300)->generate($url);
-        Storage::put($filename, $qrImage);
+        QrCodeHelper::generate($url, $filename);
 
         $item->qr_path = $filename;
     }
