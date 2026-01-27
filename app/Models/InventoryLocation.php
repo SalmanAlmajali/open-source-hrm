@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DeletesUploadedFile;
 use App\Filament\Resources\InventoryLocations\InventoryLocationResource;
 use App\QrCodeHelper;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -12,7 +13,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InventoryLocation extends Model
 {
-    use HasUuids;
+    use HasUuids, DeletesUploadedFile;
 
     protected $fillable = [
         'name',
@@ -62,5 +63,12 @@ class InventoryLocation extends Model
     public function items(): HasMany
     {
         return $this->hasMany(InventoryItem::class);
+    }
+
+    protected function uploadAttributes(): array
+    {
+        return [
+            'qr_path'
+        ];
     }
 }

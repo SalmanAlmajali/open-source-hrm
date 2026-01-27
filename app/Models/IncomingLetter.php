@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\DeletesUploadedFile;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class IncomingLetter extends Model
 {
-    use HasUuids;
+    use HasUuids, DeletesUploadedFile;
 
     protected $fillable = [
         'reference_number',
@@ -25,4 +26,11 @@ class IncomingLetter extends Model
         'letter_date' => 'date',
         'received_date' => 'date',
     ];
+
+    protected function uploadAttributes(): array
+    {
+        return [
+            'file_path'
+        ];
+    }
 }

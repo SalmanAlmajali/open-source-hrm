@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\DeletesUploadedFile;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use HasUuids;
+    use HasUuids, DeletesUploadedFile;
 
     protected $fillable = [
         'name',
@@ -46,5 +47,13 @@ class Project extends Model
     public function getStatusAttribute(): string
     {
         return $this->spk_number ? 'Realisasi' : 'Rencana';
+    }
+
+    protected function uploadAttributes(): array
+    {
+        return [
+            'offer_file_path',
+            'spk_file_path',
+        ];
     }
 }

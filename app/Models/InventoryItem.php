@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DeletesUploadedFile;
 use App\Filament\Resources\InventoryItems\InventoryItemResource;
 use App\QrCodeHelper;
 use Exception;
@@ -13,7 +14,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InventoryItem extends Model
 {
-    use HasUuids;
+    use HasUuids, DeletesUploadedFile;
 
     protected $fillable = [
         'inventory_code_id',
@@ -129,5 +130,13 @@ class InventoryItem extends Model
     public function inventoryLocation(): BelongsTo
     {
         return $this->belongsTo(InventoryLocation::class);
+    }
+
+    protected function uploadAttributes(): array
+    {
+        return [
+            'image_path',
+            'qr_path',
+        ];
     }
 }
