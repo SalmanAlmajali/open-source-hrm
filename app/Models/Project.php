@@ -5,6 +5,7 @@ namespace App\Models;
 use App\DeletesUploadedFile;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Project extends Model
 {
@@ -55,5 +56,9 @@ class Project extends Model
             'offer_file_path',
             'spk_file_path',
         ];
+    }
+
+    public function employees() : BelongsToMany {
+        return $this->belongsToMany(Employee::class, 'employee_project');
     }
 }
