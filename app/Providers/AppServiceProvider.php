@@ -74,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
             ->native(false));
 
         DatePicker::configureUsing(fn(DatePicker $datePicker) => $datePicker
-            ->format('d/m/Y')
+            ->format('Y-m-d')
             ->native(false)
             ->displayFormat('d/m/Y')
             ->locale('id')
