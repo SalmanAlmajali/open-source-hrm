@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Projects\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
@@ -12,6 +14,8 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ProjectForm
 {
@@ -51,6 +55,22 @@ class ProjectForm
                                     ->openable()
                                     ->columnSpanFull()
                                     ->helperText('Format: PDF, JPG, PNG. Maks: 10MB'),
+
+                                Select::make('employees')
+                                    ->label('Penanggung Jawab')
+                                    ->relationship(
+                                        name: 'employees',
+                                        modifyQueryUsing: fn (Builder $query) => $query->orderBy('first_name')->orderBy('last_name'),
+                                    ) // Mengambil nama dari tabel employees
+                                    ->multiple() // Memungkinkan pilih lebih dari satu
+                                    ->preload() // Memuat data di awal agar user mudah mencari
+                                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                                    ->searchable(['first_name', 'last_name']),
+
+                                RichEditor::make('notes')
+                                    ->label('Catatan Proyek')
+                                    ->placeholder('Tambahkan catatan khusus terkait proyek ini...')
+                                    ->columnSpanFull()
                             ])->columns(2),
 
                         Section::make('Legalitas (SPK)')
