@@ -89,7 +89,7 @@ class InventoryItemForm
                                     if (!$record) return;
 
                                     $preset = ['laptop', 'proyektor', 'printer', 'alat uji'];
-                                    $set('category', in_array($record->category, $preset) ? $record->kategori : 'lainnya');
+                                    $set('category', in_array($record->category, $preset) ? $record->category : 'lainnya');
                                 })
                                 ->required(),
 
@@ -112,12 +112,14 @@ class InventoryItemForm
                 Section::make('Detail')
                     ->description('Tuliskan informasi detail barang.')
                     ->schema([
-                        Grid::make(2)->schema([
-                            TextInput::make('brand')
-                                ->label('Merk'),
-                            TextInput::make('location')
-                                ->label('Lokasi'),
-                        ]),
+                        TextInput::make('brand')
+                            ->label('Merk'),
+                        Select::make('inventory_location_id')
+                            ->label('Lokasi Penyimpanan')
+                            ->relationship('inventoryLocation', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
 
                         Grid::make(3)->schema([
                             TextInput::make('stock')
@@ -156,7 +158,7 @@ class InventoryItemForm
                             ->label('Foto Barang')
                             ->image()
                             ->disk('public')
-                            ->directory('items')
+                            ->directory('/inventory/items')
                             ->maxSize(5120) // 5MB
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->columnSpanFull()

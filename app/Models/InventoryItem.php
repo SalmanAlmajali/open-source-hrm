@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Filament\Resources\InventoryItems\InventoryItemResource;
+use App\QrCodeHelper;
 use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -25,10 +27,10 @@ class InventoryItem extends Model
         'condition',
         'purchase_date',
         'price',
-        'location',
         'image_path',
         'description',
         'qr_path',
+        'location_id',
     ];
 
     protected $appends = [
@@ -101,13 +103,14 @@ class InventoryItem extends Model
      */
     public static function generateQr($item)
     {
-        $qrContent = env('APP_URL') . '/inventory/' . $item->id;
+        $url = InventoryItemResource::getUrl('view', [
+            'record' => $item
+        ]);
 
         $kodeUtama = optional($item->inventoryCode)->code ?? 'UNKNOWN';
-        $filename  = "qr_codes/{$kodeUtama}-{$item->unique_id}.png";
+        $filename  = "inventory/qr_items/{$kodeUtama}-{$item->unique_id}.png";
 
-        $qrImage = QrCode::format('png')->size(300)->generate($qrContent);
-        Storage::put($filename, $qrImage);
+        QrCodeHelper::generate($url, $filename);
 
         $item->qr_path = $filename;
     }
@@ -121,5 +124,10 @@ class InventoryItem extends Model
     public function inventoryLoans()
     {
         return $this->hasMany(InventoryLoan::class, 'item_id');
+    }
+
+    public function inventoryLocation(): BelongsTo
+    {
+        return $this->belongsTo(InventoryLocation::class);
     }
 }
