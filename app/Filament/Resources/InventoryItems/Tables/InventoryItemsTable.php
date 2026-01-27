@@ -49,8 +49,8 @@ class InventoryItemsTable
                         'warning' => 'repair',
                     ]),
 
-                TextColumn::make('location')
-                    ->label('Lokasi')
+                TextColumn::make('inventoryLocation.name')
+                    ->label('Lokasi Penyimpanan')
                     ->searchable()
                     ->toggleable(),
             ])
