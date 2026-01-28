@@ -25,11 +25,11 @@ class ProjectsTable
                     ->rowIndex()
                     ->color('gray')
                     ->width(50),
-                    
+
                 TextColumn::make('name')
                     ->label('Proyek')
                     ->searchable()
-                    ->description(fn (Project $record) => $record->offer_number)
+                    ->description(fn(Project $record) => $record->offer_number)
                     ->weight(FontWeight::Bold),
 
                 TextColumn::make('status')
@@ -39,7 +39,7 @@ class ProjectsTable
                         'gray' => 'Rencana',
                         'success' => 'Realisasi',
                     ])
-                    ->getStateUsing(fn (Project $record) => $record->status),
+                    ->getStateUsing(fn(Project $record) => $record->status),
 
                 TextColumn::make('contract_value')
                     ->label('Nilai Kontrak')
@@ -53,11 +53,24 @@ class ProjectsTable
                     ->color('success')
                     ->sortable()
                     ->summarize(Sum::make()->money('IDR', locale: 'id')),
-                
+
                 TextColumn::make('spk_date')
                     ->label('Tgl SPK')
                     ->date('d M Y')
                     ->toggleable(),
+
+                TextColumn::make('employees.name')
+                    ->label('Penanggung Jawab')
+                    ->badge() // Ditampilkan dalam bentuk tag/badge
+                    ->separator(',') // Pemisah data
+                    ->color('info')
+                    ->searchable(),
+
+                TextColumn::make('notes')
+                    ->label('Catatan')
+                    ->limit(50) // Membatasi teks agar tabel tidak terlalu panjang
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->html(),
             ])
             ->filters([
                 SelectFilter::make('status')
