@@ -17,12 +17,16 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
+use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use LaraZeus\Boredom\BoringAvatarPlugin;
+use LaraZeus\Boredom\BoringAvatarsProvider;
+use LaraZeus\Boredom\Enums\Variants;
 use Muazzam\SlickScrollbar\SlickScrollbarPlugin;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
 
@@ -56,6 +60,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
+                AccountWidget::class,
                 StatsOverview::class,
                 \App\Filament\Resources\Employees\Widgets\StatsOverview::class,
                 ProjectOverviewChart::class,
@@ -86,7 +91,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentAwinTheme::make(),
                 SlickScrollbarPlugin::make()
-                ->palette('primary'),
+                    ->palette('primary'),
             ]);
     }
 }
