@@ -24,11 +24,9 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use LaraZeus\Boredom\BoringAvatarPlugin;
-use LaraZeus\Boredom\BoringAvatarsProvider;
-use LaraZeus\Boredom\Enums\Variants;
 use Muazzam\SlickScrollbar\SlickScrollbarPlugin;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
+use SalmanAlmajali\JokesWidget\JokesWidget;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -61,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 AccountWidget::class,
+                JokesWidget::class,
                 StatsOverview::class,
                 \App\Filament\Resources\Employees\Widgets\StatsOverview::class,
                 ProjectOverviewChart::class,
@@ -89,9 +88,9 @@ class AdminPanelProvider extends PanelProvider
                 // 'role:admin'
             ])
             ->plugins([
-                FilamentAwinTheme::make(),
-                SlickScrollbarPlugin::make()
-                    ->palette('primary'),
+                // FilamentAwinTheme::make(),
+                // SlickScrollbarPlugin::make()
+                //     ->palette('primary'),
             ]);
     }
 }
