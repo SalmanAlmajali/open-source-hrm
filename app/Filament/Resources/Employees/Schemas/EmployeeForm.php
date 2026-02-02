@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\Employees\Schemas;
 
-use Filament\Forms\Components\{TextInput, DatePicker, Select, Toggle, TextArea};
+use Filament\Forms\Components\{TextInput, DatePicker, FileUpload, Select, Toggle, TextArea};
 use Filament\Schemas\Schema;
 use App\Models\{Position, Department, Employee};
 use Filament\Schemas\Components\{Section, Grid};
@@ -82,6 +82,15 @@ class EmployeeForm
                                 ->mask('9999999999999999'),
                         ])
                             ->columnSpanFull(),
+                        FileUpload::make('profile_photo_path')
+                            ->label('Foto Profil')
+                            ->avatar() // Mode avatar (bulat & kecil)
+                            ->image()
+                            ->imageEditor() // Fitur crop/rotate
+                            ->directory('employee-photos') // Folder penyimpanan di storage
+                            ->columnSpanFull()
+                            ->maxSize(2048)
+                            ->helperText('Format: JPG, PNG. Maks: 2MB'), // Maks 2MB
                     ]),
 
                 // GROUP 4: DATA PEKERJAAN

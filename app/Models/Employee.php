@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\DeletesUploadedFile;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -23,6 +25,7 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes, HasRoles, HasUuids;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -31,6 +34,7 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
     protected $fillable = [
         'first_name',
         'last_name',
+        'profile_photo_path',
         'email',
         'password',
     ];
@@ -87,20 +91,5 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_active;
-    }
-
-    public function getFilamentAvatarUrl(): ?string
-    {
-        if ($this->profile_photo_path) {
-            return Storage::url($this->profile_photo_path);
-        }
-        
-        return "https://api.dicebear.com/9.x/lorelei/svg?seed={$this->name}?beardProbability=50?earringsProbability=50?frecklesProbability=50?glasses=variant01,variant02,varian03,varian04,varian05?glassesProbability=80?hairAccessories=flowers?hairAccessoriesProbability=80?size=96
-";
-    }
-
-    public function getFilamentName(): string
-    {
-        return "{$this->first_name} {$this->last_name}";
     }
 }
