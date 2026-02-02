@@ -24,9 +24,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use LaraZeus\Boredom\BoringAvatarPlugin;
-use LaraZeus\Boredom\BoringAvatarsProvider;
-use LaraZeus\Boredom\Enums\Variants;
 use Muazzam\SlickScrollbar\SlickScrollbarPlugin;
 use Resma\FilamentAwinTheme\FilamentAwinTheme;
 
