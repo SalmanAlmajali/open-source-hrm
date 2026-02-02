@@ -27,6 +27,7 @@ class Employee extends Authenticatable implements FilamentUser
     protected $fillable = [
         'first_name',
         'last_name',
+        'profile_photo_path',
         'email',
         'password',
     ];
