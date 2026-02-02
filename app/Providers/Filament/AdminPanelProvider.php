@@ -84,6 +84,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentAwinTheme::make(),
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop();
     }
 }
