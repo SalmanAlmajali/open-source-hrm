@@ -13,6 +13,9 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Zvizvi\UserFields\Components\UserColumn;
+use Zvizvi\UserFields\Components\UserSelectFilter;
+use Zvizvi\UserFields\Components\UserStackedColumn;
 
 class ProjectsTable
 {
@@ -59,12 +62,12 @@ class ProjectsTable
                     ->date('d M Y')
                     ->toggleable(),
 
-                TextColumn::make('employees.name')
+                UserStackedColumn::make('employees')
                     ->label('Penanggung Jawab')
-                    ->badge() // Ditampilkan dalam bentuk tag/badge
-                    ->separator(',') // Pemisah data
-                    ->color('info')
-                    ->searchable(),
+                    ->searchable()
+                    ->tooltip(fn($state) => $state?->name)
+                    ->ring(2) // Ring width around avatars
+                    ->imageHeight(32),
 
                 TextColumn::make('notes')
                     ->label('Catatan')
@@ -73,6 +76,12 @@ class ProjectsTable
                     ->html(),
             ])
             ->filters([
+                UserSelectFilter::make('employees')
+                    ->label('Penanggung Jawab')
+                    ->relationship('employees', 'name')
+                    ->searchable()
+                    ->preload(),
+
                 SelectFilter::make('status')
                     ->options([
                         'Rencana' => 'Rencana (Belum SPK)',

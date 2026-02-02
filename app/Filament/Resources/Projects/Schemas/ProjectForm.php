@@ -16,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Zvizvi\UserFields\Components\UserSelect;
 
 class ProjectForm
 {
@@ -56,15 +57,15 @@ class ProjectForm
                                     ->columnSpanFull()
                                     ->helperText('Format: PDF, JPG, PNG. Maks: 10MB'),
 
-                                Select::make('employees')
+                                UserSelect::make('employees')
                                     ->label('Penanggung Jawab')
                                     ->relationship(
                                         name: 'employees',
-                                        modifyQueryUsing: fn (Builder $query) => $query->orderBy('first_name')->orderBy('last_name'),
+                                        // modifyQueryUsing: fn (Builder $query) => $query->orderBy('first_name')->orderBy('last_name'),
                                     ) // Mengambil nama dari tabel employees
                                     ->multiple() // Memungkinkan pilih lebih dari satu
                                     ->preload() // Memuat data di awal agar user mudah mencari
-                                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                                    // ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
                                     ->searchable(['first_name', 'last_name']),
 
                                 RichEditor::make('notes')

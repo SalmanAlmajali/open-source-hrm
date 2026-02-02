@@ -11,6 +11,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
+use Zvizvi\UserFields\Components\UserEntry;
 
 class ProjectInfolist
 {
@@ -145,24 +146,17 @@ class ProjectInfolist
                     ->schema([
                         Grid::make(2)->schema([
                             // Kolom Kiri: Penanggung Jawab (PIC)
-                            Group::make([
-                                TextEntry::make('employees.name')
-                                    ->label('Penanggung Jawab (PIC)')
-                                    ->badge() // Menampilkan daftar nama dalam bentuk badge
-                                    ->color('info')
-                                    ->icon('heroicon-m-user')
-                                    ->listWithLineBreaks() // Jika banyak, akan disusun ke bawah
-                                    ->placeholder('Belum ada penanggung jawab yang ditunjuk.'),
-                            ]),
+                            UserEntry::make('employees')
+                                ->label('Penanggung Jawab (PIC)')
+                                ->placeholder('Belum ada penanggung jawab yang ditunjuk.')
+                                ->wrapped(),
 
                             // Kolom Kanan: Catatan
-                            Group::make([
-                                TextEntry::make('notes')
-                                    ->label('Catatan Proyek')
-                                    ->markdown() // Mendukung format teks tebal/miring jika diperlukan
-                                    ->prose() // Membuat teks panjang lebih nyaman dibaca
-                                    ->placeholder('Tidak ada catatan khusus untuk proyek ini.'),
-                            ]),
+                            TextEntry::make('notes')
+                                ->label('Catatan Proyek')
+                                ->markdown() // Mendukung format teks tebal/miring jika diperlukan
+                                ->prose() // Membuat teks panjang lebih nyaman dibaca
+                                ->placeholder('Tidak ada catatan khusus untuk proyek ini.'),
                         ]),
                     ])
                     ->columnSpanFull(),

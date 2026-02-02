@@ -7,19 +7,24 @@ namespace App\Models;
 use App\DeletesUploadedFile;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+use LaraZeus\Boredom\Concerns\HasBoringAvatar;
 use Spatie\Permission\Traits\HasRoles;
 
-class Employee extends Authenticatable implements FilamentUser
+class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasName
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasUuids, DeletesUploadedFile;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasUuids;
 
     /**
      * The attributes that are mass assignable.
@@ -57,7 +62,7 @@ class Employee extends Authenticatable implements FilamentUser
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
-    
+
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class, 'position_id');
@@ -86,12 +91,5 @@ class Employee extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_active;
-    }
-
-    protected function uploadAttributes(): array
-    {
-        return [
-            'profile_photo_path',
-        ];
     }
 }
