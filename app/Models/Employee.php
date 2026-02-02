@@ -91,6 +91,10 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
 
     public function getFilamentAvatarUrl(): ?string
     {
+        if ($this->profile_photo_path) {
+            return Storage::url($this->profile_photo_path);
+        }
+        
         return "https://api.dicebear.com/9.x/lorelei/svg?seed={$this->name}?beardProbability=50?earringsProbability=50?frecklesProbability=50?glasses=variant01,variant02,varian03,varian04,varian05?glassesProbability=80?hairAccessories=flowers?hairAccessoriesProbability=80?size=96
 ";
     }
