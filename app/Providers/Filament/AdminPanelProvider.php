@@ -88,9 +88,9 @@ class AdminPanelProvider extends PanelProvider
                 // 'role:admin'
             ])
             ->plugins([
-                // FilamentAwinTheme::make(),
-                // SlickScrollbarPlugin::make()
-                //     ->palette('primary'),
+                FilamentAwinTheme::make(),
+                SlickScrollbarPlugin::make()
+                    ->palette('primary'),
             ]);
     }
 }
