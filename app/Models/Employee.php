@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\DeletesUploadedFile;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -17,7 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 class Employee extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasUuids;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles, HasUuids, DeletesUploadedFile;
 
     /**
      * The attributes that are mass assignable.
@@ -84,5 +86,12 @@ class Employee extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_active;
+    }
+
+    protected function uploadAttributes(): array
+    {
+        return [
+            'profile_photo_path',
+        ];
     }
 }
