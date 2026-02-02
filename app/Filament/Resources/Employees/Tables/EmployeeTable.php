@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Employees\Tables;
 use Filament\Tables\Table;
 use App\Models\{Employee, Position, Department};
 use Filament\Tables\Filters\{Filter, SelectFilter};
-use Filament\Tables\Columns\{TextColumn, ToggleColumn,};
+use Filament\Tables\Columns\{ImageColumn, TextColumn, ToggleColumn,};
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions\{ActionGroup, EditAction, ViewAction, DeleteAction, BulkActionGroup, DeleteBulkAction};
 use Filament\Support\Enums\FontFamily;
@@ -27,6 +27,11 @@ class EmployeeTable
                     ->rowIndex()
                     ->color('gray')
                     ->width(50),
+                ImageColumn::make('profile_photo_path')
+                    ->label('Foto')
+                    ->circular() // Tampil bulat
+                    // ->defaultImageUrl(fn($record) => $record->getFilamentAvatarUrl()) // Fallback ke DiceBear jika kosong
+                    ->toggleable(),
                 // KOLOM 1: NIP (Dibuat Font Mono agar rapi)
                 TextColumn::make('employee_code')
                     ->label('NIP')
