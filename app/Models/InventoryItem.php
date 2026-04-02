@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\DeletesUploadedFile;
+use App\Traits\DeletesUploadedFile;
 use App\Filament\Resources\InventoryItems\InventoryItemResource;
 use App\QrCodeHelper;
+use App\Traits\FileUploadTrait;
 use Exception;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class InventoryItem extends Model
 {
-    use HasUuids, DeletesUploadedFile;
+    use HasUuids, DeletesUploadedFile, FileUploadTrait;
 
     protected $fillable = [
         'inventory_code_id',

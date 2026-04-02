@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\DeletesUploadedFile;
+use App\Traits\DeletesUploadedFile;
 use App\Filament\Resources\InventoryLocations\InventoryLocationResource;
 use App\QrCodeHelper;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

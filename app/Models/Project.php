@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use App\DeletesUploadedFile;
+use App\Traits\DeletesUploadedFile;
+use App\Traits\FileUploadTrait;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Project extends Model
 {
-    use HasUuids, DeletesUploadedFile;
+    use HasUuids, DeletesUploadedFile, FileUploadTrait;
 
     protected $fillable = [
         'name',
@@ -58,7 +60,13 @@ class Project extends Model
         ];
     }
 
-    public function employees() : BelongsToMany {
+    public function employees(): BelongsToMany
+    {
         return $this->belongsToMany(Employee::class, 'employee_project');
+    }
+
+    public function receivable(): HasOne
+    {
+        return $this->hasOne(CashReceivable::class);
     }
 }
