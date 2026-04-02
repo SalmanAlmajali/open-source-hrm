@@ -65,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Work space',
                 'HR Management',
+                'Keuangan',
                 'Tata Laksana Surat',
                 'Master Data',
                 'Pengaturan Sistem',

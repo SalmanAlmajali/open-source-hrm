@@ -6,10 +6,12 @@ use App\Models\Department;
 use App\Observers\DepartmentObserver;
 use App\Observers\EmployeeObserver;
 use App\Observers\MessageObserver;
+use App\Observers\PayrollObserver;
+use App\Observers\ProjectObserver;
 use App\Observers\TaskObserver;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use App\Models\{Task, Message, Employee};
+use App\Models\{Task, Message, Employee, Payroll, Project};
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -43,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         Message::observe(MessageObserver::class);
         Department::observe(DepartmentObserver::class);
         Employee::observe(EmployeeObserver::class);
+        Payroll::observe(PayrollObserver::class);
+        Project::observe(ProjectObserver::class);
     }
 
     private function configureCommands(): void
