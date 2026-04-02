@@ -30,7 +30,7 @@ class EmployeeTable
                 ImageColumn::make('profile_photo_path')
                     ->label('Foto')
                     ->circular() // Tampil bulat
-                    // ->defaultImageUrl(fn($record) => $record->getFilamentAvatarUrl()) // Fallback ke DiceBear jika kosong
+                    ->defaultImageUrl(fn($record) => $record->getFilamentAvatarUrl()) // Fallback ke DiceBear jika kosong
                     ->toggleable(),
                 // KOLOM 1: NIP (Dibuat Font Mono agar rapi)
                 TextColumn::make('employee_code')

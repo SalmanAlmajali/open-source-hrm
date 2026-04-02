@@ -10,6 +10,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Models\IncomingLetter;
 
 class IncomingLetterForm
 {
@@ -72,13 +74,15 @@ class IncomingLetterForm
 
                         FileUpload::make('file_path')
                             ->label('Upload Scan Surat')
-                            ->directory('letters/incoming')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->maxSize(10240) // 10MB
                             ->downloadable()
                             ->openable()
                             ->columnSpanFull()
-                            ->helperText('Format: PDF, JPG, PNG. Maks: 10MB'),
+                            ->helperText('Format: PDF, JPG, PNG. Maks: 10MB')
+                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                return (new IncomingLetter)->uploadFile($file, 'letters/incoming');
+                            }),
                     ]),
             ]);
     }

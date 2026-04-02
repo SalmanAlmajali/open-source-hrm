@@ -8,6 +8,7 @@ use App\Models\{Position, Department, Employee};
 use Filament\Schemas\Components\{Section, Grid};
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class EmployeeForm
 {
@@ -87,10 +88,12 @@ class EmployeeForm
                             ->avatar() // Mode avatar (bulat & kecil)
                             ->image()
                             ->imageEditor() // Fitur crop/rotate
-                            ->directory('employee-photos') // Folder penyimpanan di storage
                             ->columnSpanFull()
                             ->maxSize(2048)
-                            ->helperText('Format: JPG, PNG. Maks: 2MB'), // Maks 2MB
+                            ->helperText('Format: JPG, PNG. Maks: 2MB')
+                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                return (new Employee)->uploadFile($file, 'employee-photos');
+                            }),
                     ]),
 
                 // GROUP 4: DATA PEKERJAAN

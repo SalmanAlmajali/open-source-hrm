@@ -10,6 +10,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Models\OutgoingLetter;
 
 class OutgoingLetterForm
 {
@@ -70,12 +72,14 @@ class OutgoingLetterForm
 
                         FileUpload::make('file_path')
                             ->label('Arsip Surat Keluar')
-                            ->directory('letters/outgoing')
                             ->acceptedFileTypes(['application/pdf', 'image/*'])
                             ->maxSize(10240)
                             ->downloadable()
                             ->columnSpanFull()
-                            ->helperText('Format: PDF, JPG, PNG. Maks: 10MB'),
+                            ->helperText('Format: PDF, JPG, PNG. Maks: 10MB')
+                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                return (new OutgoingLetter)->uploadFile($file, 'letters/outgoing');
+                            }),
                     ]),
             ]);
     }

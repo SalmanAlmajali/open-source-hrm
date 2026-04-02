@@ -16,6 +16,8 @@ use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use App\Models\Project;
 use Zvizvi\UserFields\Components\UserSelect;
 
 class ProjectForm
@@ -49,13 +51,15 @@ class ProjectForm
                                 // FILE UPLOAD PENAWARAN
                                 FileUpload::make('offer_file_path')
                                     ->label('Upload Dokumen Penawaran')
-                                    ->directory('project-offers') // Folder penyimpanan
                                     ->acceptedFileTypes(['application/pdf', 'image/*']) // Hanya PDF & Gambar
-                                    ->maxSize(10240) // Maks 5MB
+                                    ->maxSize(10240) // Maks 10MB
                                     ->downloadable()
                                     ->openable()
                                     ->columnSpanFull()
-                                    ->helperText('Format: PDF, JPG, PNG. Maks: 10MB'),
+                                    ->helperText('Format: PDF, JPG, PNG. Maks: 10MB')
+                                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                        return (new Project)->uploadFile($file, 'project-offers');
+                                    }),
 
                                 UserSelect::make('employees')
                                     ->label('Penanggung Jawab')
@@ -88,13 +92,15 @@ class ProjectForm
                                 // FILE UPLOAD SPK
                                 FileUpload::make('spk_file_path')
                                     ->label('Upload Dokumen SPK')
-                                    ->directory('project-spk') // Folder penyimpanan
                                     ->acceptedFileTypes(['application/pdf', 'image/*'])
                                     ->maxSize(10240) // Maks 10MB
                                     ->downloadable()
                                     ->openable()
                                     ->columnSpanFull()
-                                    ->helperText('Upload scan SPK yang sudah ditandatangani. Format: PDF, JPG, PNG. Maks: 5MB'),
+                                    ->helperText('Upload scan SPK yang sudah ditandatangani. Format: PDF, JPG, PNG. Maks: 5MB')
+                                    ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                        return (new Project)->uploadFile($file, 'project-spk');
+                                    }),
                             ])->columns(2),
                     ])->columnSpan(2),
 

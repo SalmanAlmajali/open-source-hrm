@@ -4,6 +4,7 @@ namespace App\Filament\Resources\InventoryItems\Schemas;
 
 use App\Filament\Resources\InventoryItems\Pages\CreateInventoryItem;
 use App\Models\InventoryItem;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -158,12 +159,14 @@ class InventoryItemForm
                             ->label('Foto Barang')
                             ->image()
                             ->disk('public')
-                            ->directory('/inventory/items')
                             ->maxSize(5120) // 5MB
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->columnSpanFull()
                             ->required()
-                            ->helperText('Format: JPG, PNG. Maks: 5MB'),
+                            ->helperText('Format: JPG, PNG. Maks: 5MB')
+                            ->saveUploadedFileUsing(function (TemporaryUploadedFile $file): string {
+                                return (new InventoryItem)->uploadFile($file, 'inventory/items');
+                            }),
 
                         RichEditor::make('description')
                             ->label('Catatan')
