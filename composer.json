@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.1",
         "filament/filament": "^4.0",
         "flowframe/laravel-trend": "^0.4.0",
         "guava/calendar": "^2.0",
@@ -17,6 +18,7 @@
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
+        "maatwebsite/excel": "^3.1",
         "muazzam/slick-scrollbar": "^1.0",
         "relaticle/flowforge": "^2.0",
         "resma/filament-awin-theme": "^1.1",
