@@ -91,7 +91,8 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
-            'hire_date' => 'date'
+            'hire_date' => 'date',
+            'national_id' => 'integer',
         ];
     }
 
