@@ -30,7 +30,7 @@ class EmployeeInfolist
                                     ->weight(FontWeight::Bold)
                                     ->size(TextSize::Large),
 
-                                TextEntry::make('employee_number')
+                                TextEntry::make('employee_code')
                                     ->label('NIP')
                                     ->fontFamily(FontFamily::Mono)
                                     ->copyable()
@@ -181,7 +181,7 @@ class EmployeeInfolist
                             ])->columns(2),
                     ]),
                 ])
-                ->columnSpanFull(),
+                    ->columnSpanFull(),
             ]);
     }
 }
