@@ -249,16 +249,13 @@ class EmployeeForm
                             ->compact()
                             ->schema([
                                 TextInput::make('next_of_kin_name')
-                                    ->label('Nama Lengkap')
-                                    ->required(),
+                                    ->label('Nama Lengkap'),
                                 TextInput::make('next_of_kin_relationship')
                                     ->label('Hubungan')
-                                    ->placeholder('Istri, Suami, Ayah, dll')
-                                    ->required(),
+                                    ->placeholder('Istri, Suami, Ayah, dll'),
                                 TextInput::make('next_of_kin_phone')
                                     ->label('Nomor Telepon')
-                                    ->tel()
-                                    ->required(),
+                                    ->tel(),
                                 TextInput::make('next_of_kin_email')
                                     ->label('Email (Opsional)')
                                     ->email(),
