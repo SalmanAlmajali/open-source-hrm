@@ -151,4 +151,22 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
     {
         return $this->hasMany(Bottleneck::class, 'resolved_by');
     }
+
+    // Rating received from stakeholders (performance ratings)
+    public function receivedRatings()
+    {
+        return $this->hasMany(ProjectEmployeeRating::class, 'employee_id');
+    }
+
+    // Rating given by this employee (as a stakeholders) to other employees
+    public function givenRatings()
+    {
+        return $this->hasMany(EmployeeProjectRating::class, 'rated_by');
+    }
+
+    // Rating given by this employee to projects (project feedback)
+    public function projectRatingsGiven()
+    {
+        return $this->hasMany(ProjectEmployeeRating::class, 'employee_id');
+    }
 }
