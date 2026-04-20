@@ -107,8 +107,7 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
             return Storage::url($this->profile_photo_path);
         }
 
-        return "https://api.dicebear.com/9.x/lorelei/svg?seed={$this->name}?beardProbability=50?earringsProbability=50?frecklesProbability=50?glasses=variant01,variant02,varian03,varian04,varian05?glassesProbability=80?hairAccessories=flowers?hairAccessoriesProbability=80?size=96
-";
+        return "https://api.dicebear.com/9.x/lorelei/svg?seed={$this->name}?beardProbability=50?earringsProbability=50?frecklesProbability=50?glasses=variant01,variant02,varian03,varian04,varian05?glassesProbability=80?hairAccessories=flowers?hairAccessoriesProbability=80?size=96";
     }
 
     public function getFilamentName(): string
@@ -121,5 +120,35 @@ class Employee extends Authenticatable implements FilamentUser, HasAvatar, HasNa
         return [
             'profile_photo_path'
         ];
+    }
+
+    public function progressLogs()
+    {
+        return $this->hasMany(ProjectProgress::class);
+    }
+
+    public function acknowledgedProgressLogs()
+    {
+        return $this->hasMany(ProjectProgress::class, 'acknowledged_by');
+    }
+
+    public function deletedProgressLogs()
+    {
+        return $this->hasMany(ProjectProgress::class, 'deleted_by');
+    }
+
+    public function reportedBottlenecks()
+    {
+        return $this->hasMany(Bottleneck::class, 'reported_by');
+    }
+
+    public function acknowledgedBottlenecks()
+    {
+        return $this->hasMany(Bottleneck::class, 'acknowledged_by');
+    }
+
+    public function resolvedBottlenecks()
+    {
+        return $this->hasMany(Bottleneck::class, 'resolved_by');
     }
 }
