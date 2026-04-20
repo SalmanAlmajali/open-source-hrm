@@ -79,4 +79,16 @@ class Project extends Model
     {
         return $this->hasMany(Bottleneck::class);
     }
+
+    // Ratings from employees about this project
+    public function ratingsFromEmployees()
+    {
+        return $this->hasMany(ProjectEmployeeRating::class);
+    }
+
+    // Stakeholder ratings of employees on this project
+    public function employeeRatings()
+    {
+        return $this->hasMany(EmployeeProjectRating::class);
+    }
 }
