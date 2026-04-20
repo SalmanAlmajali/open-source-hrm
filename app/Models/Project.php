@@ -69,4 +69,14 @@ class Project extends Model
     {
         return $this->hasOne(CashReceivable::class);
     }
+
+    public function progressLogs()
+    {
+        return $this->hasMany(ProjectProgress::class);
+    }
+
+    public function bottlenecks()
+    {
+        return $this->hasMany(Bottleneck::class);
+    }
 }
